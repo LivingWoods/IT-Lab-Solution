@@ -1,0 +1,49 @@
+﻿@page "/"
+
+<h1 class="title">Materials <small>Index</small></h1>
+<div class="is-flex is-flex-direction-row-reverse">
+    <div class="field has-addons">
+        <div class="control">
+            <input class="input is-one-third" type="search" placeholder="Search..." @bind-value="searchTerm">
+        </div>
+        <div class="control">
+            <button class="button is-info" @onclick="HandleSearchClick">Search</button>
+        </div>
+        <AuthorizeView Roles="Administrator">
+            <div class="control">
+                <a class="button is-primary" href="material/create">Create</a>
+            </div>
+        </AuthorizeView>
+    </div>
+</div>
+
+@if (materials is null)
+{
+    <div class="pageloader is-active"><span class="title">Loading...</span></div>
+}
+else
+{
+    <section class="section">
+        <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th align="left">Name</th>
+                    <th align="left">Description</th>
+                    <th align="right">In Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var mat in materials)
+                {
+                    <tr>
+                        <td><a href="material/@mat.Id">@mat.Name</a></td>
+                        <td>@mat.Description.Truncate(250)</td>
+                        <td align="right">@(mat.InStock ? "Ja" : "Neen")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+}
+
+
